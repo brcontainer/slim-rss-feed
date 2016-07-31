@@ -1,0 +1,27 @@
+{
+    "name": "SlimRssFeed",
+    "version": "0.0.1",
+    "manifest_version": 2,
+    "description": "Feed readers",
+    "page_action": {
+        "default_icon": "images/icon.png",
+        "default_popup": "view/popup.html",
+        "default_title": "Page refreshes every min"
+    },
+    "background": {
+        "scripts": [
+            "js/background.js"
+        ]
+    },
+    "content_scripts": [{
+        "matches": [
+            "<all_urls>"
+        ],
+        "js": [
+            "js/detectfeeds.js"
+        ]
+    }],
+    "permissions": [
+        "<all_urls>"
+    ]
+}

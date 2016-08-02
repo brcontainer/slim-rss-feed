@@ -9,15 +9,15 @@
 (function() {
     "use strict";
 
-    var isAlternate = /(^|\s)alternate($|\s)/i;
-    var isHttp      = /^http(|s)\:\/\/[a-z0-9]/i;
-    var isRss       = /^application\/(atom|rss)\+xml$/i;
-    var feeds       = [];
-    var timer;
+    var isAlternate = /(^|\s)alternate($|\s)/i,
+        isHttp      = /^http(|s)\:\/\/[a-z0-9]/i,
+        isRss       = /^application\/(atom|rss)\+xml$/i,
+        feeds       = [],
+        timer;
 
     function updateList()
     {
-        if (feeds.length > 0 && chrome.runtime && chrome.runtime.sendMessage) {
+        if (chrome.runtime && chrome.runtime.sendMessage) {
             chrome.runtime.sendMessage({
                 "type": "update",
                 "items": feeds

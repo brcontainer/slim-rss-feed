@@ -5,41 +5,20 @@
  *
  * https://github.com/brcontainer/stack-exchange-notification
  */
-html, body, h1, h2, h3, h4, h5, p, a {
-    font-family: Open Sans, Arial, sans-serif;
-    letter-spacing: 1px;
-    font-size: 9pt;
-    margin: 0;
-}
-
-h1, h2, h3, h4, h5 {
-    text-transform: capitalize;
-}
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    background-color: #fff;
-    width: 360px;
-    font-size: 9pt;
-    font-size: 13px;
-    color: #444;
-
-    -webkit-touch-callout: none;
-      -webkit-user-select: none;
-       -khtml-user-select: none;
-         -moz-user-select: none;
-          -ms-user-select: none;
-              user-select: none;
-}
 
 html {
     overflow-x: hidden;
-    min-height: 400px;
-    max-height: 400px;
-        height: 400px;
+}
+
+body {
+    min-height: 600px;
+}
+
+@media (max-device-height: 600px)
+{
+    body {
+        max-height: 480px;
+    }
 }
 
 @media (max-device-height: 400px)
@@ -53,30 +32,6 @@ body, a {
     color: #4F4949;
 }
 
-hr {
-    border: none;
-    border-top: 1px #efefef solid;
-    text-shadow: none;
-    -webkit-margin-before: 0;
-    -webkit-margin-after: 0;
-    margin: 0.5em;
-}
-
-::-webkit-scrollbar {
-    background: #dfdfdf;
-    border-radius: 4px;
-    width: 8px;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
 body > .header {
     padding: 15px;
     border-bottom: 1px solid #f0f1f2;
@@ -88,6 +43,8 @@ body > .header {
 body > .main {
     padding: 5px 0 65px 0;
     line-height: 18px;
+    position: relative;
+    min-height: 240px;
 }
 
 body > .footer {
@@ -101,13 +58,14 @@ body > .footer {
     text-align: right;
 }
 
-.btn {
-    color: #fff;
-    background: #f2327e;
-    border: 0;
-    border-radius: 2px;
-    cursor: pointer;
-    padding: 6px 10px;
+.footer .status {
+    float: left;
+    color: #a8a9a9;
+    padding: 6px 0;
+}
+
+.footer .btn {
+    float: right;
 }
 
 .item {
@@ -131,41 +89,24 @@ body > .footer {
     border-bottom: none;
 }
 
-.item > .icon {
+.item > .inner > .icon {
     width: 50px;
     float: left;
 }
-.item > .icon img {
+.item > .inner > .icon img {
     width: 24px;
 }
-.item > .action {
+.item > .inner > .action {
     width: 24px;
     float: right;
 }
-.item > .action img {
+.item > .inner > .action img {
     width: 18px;
 }
-.item > .content {
+.item > .inner > .content {
     margin: 0 24px 0 50px;
     font-size: 8pt;
     font-weight: 400;
-}
-
-.hide {
-    display: none !important;
-}
-
-.load {
-    background: url(../images/load.svg) center center no-repeat;
-    background-size: 32px 32px;
-    overflow: hidden;
-    height: 64px;
-    -webkit-animation: spin .5s linear infinite;
-       -moz-animation: spin .5s linear infinite;
-            animation: spin .5s linear infinite;
-}
-.load * {
-    display: none;
 }
 
 .item > .load {
@@ -174,38 +115,19 @@ body > .footer {
 }
 
 @-moz-document url-prefix() {
-    .item > .action {
+    .item > .inner > .action {
         width: 32px;
         float: right;
     }
-    .item > .action img {
+    .item > .inner > .action img {
         width: 18px;
     }
-    .item > .content {
+    .item > .inner > .content {
         margin: 0 34px;
     }
 }
 
-.item > .content > .footer {
+.item > .inner > .content > .footer {
     font-style: italic;
     color: #9ba5af;
-}
-
-@-moz-keyframes spin {
-    100% {
-        -moz-transform: rotate(360deg);
-    }
-}
-
-@-webkit-keyframes spin {
-    100% {
-        -webkit-transform: rotate(360deg);
-    }
-}
-
-@keyframes spin {
-    100% {
-        -webkit-transform: rotate(360deg);
-                transform: rotate(360deg);
-    }
 }

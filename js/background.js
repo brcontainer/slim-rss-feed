@@ -7,31 +7,50 @@
  */
 
 (function() {
-    var allFeeds = {};
+    var
+        allFeeds = {},
+        subscriptionsTab;
 
     chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-        if (request.type === "update" && request.items && request.items.length) {
-            //chrome.pageAction.show(sender.tab.id);
+        switch (request.type) {
+            case "update":
+                if (request.items && request.items.length) {
+                    chrome.browserAction.setIcon({
+                        "tabId": sender.tab.id,
+                        "path": "images/active.png"
+                    });
+                }
 
-            chrome.browserAction.setIcon({
-                "tabId": sender.tab.id,
-                "path": "images/active.png"
-            });
+                if (request.items) {
+                    allFeeds["tab_" + sender.tab.id] = request.items;
+                }
+            break;
 
-            allFeeds["tab_" + sender.tab.id] = request.items;
-        } else if (request.type === "get" && request.id && allFeeds["tab_" + request.id]) {
-            sendResponse(allFeeds["tab_" + request.id]);
+            case "get":
+                if (request.id && allFeeds["tab_" + request.id]) {
+                    sendResponse(allFeeds["tab_" + request.id]);
+                } else {
+                    sendResponse([]);
+                }
+            break;
+
+            case "subscriptions":
+                chrome.tabs.create({
+                    "url": "view/subscriptions.html"
+                }, function(tab) {
+                    subscriptionsTab = tab.id
+                });
+            break;
         }
     });
 
     function handleHeaders(details)
     {
-        console.log(details.responseHeaders, details.url);
+        //console.log(details.responseHeaders, details.url);
     }
 
     chrome.webRequest.onHeadersReceived.addListener(handleHeaders, {
-        urls: ['https://*/*', 'http://*/*'],
-        types: ['main_frame']
-    },
-    ['responseHeaders', 'blocking']);
+        "urls":  [ "https://*/*", "http://*/*" ],
+        "types": [ "main_frame" ]
+    }, [ "responseHeaders", "blocking" ]);
 })();

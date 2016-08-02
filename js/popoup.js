@@ -8,7 +8,42 @@
 
 (function() {
     var
-        tpl, mainContent;
+        tpl,
+        mainContent,
+        debugMode;
+
+    if ("update_url" in chrome.runtime.getManifest()) {
+        debugMode = false;
+    }
+
+    function FF() {
+        if (!debugMode) {
+            (evt || window.event).preventDefault();
+            return false;
+        }
+    }
+
+    function setLinkEvents(target) {
+        var els = target.getElementsByTagName("a");
+
+        for (var i = 0, j = els.length; i < j; i++) {
+            setActionAnchor(els[i]);
+        }
+    }
+
+    function setActionAnchor(el) {
+        if (el.senLink) {
+            return;
+        }
+
+        el.senLink = true;
+
+        el.addEventListener("click", function(evt) {
+            (evt || window.event).preventDefault();
+        });
+
+        el.addEventListener("dragstart", FF);
+    }
 
     function populateView(data)
     {
@@ -18,12 +53,14 @@
         view.innerHTML = d;
         view = view.firstElementChild;
 
+        setLinkEvents(view);
+
         mainContent.appendChild(view);
     }
 
     function getData(tpl)
     {
-        chrome.tabs.query({ "active": true, "currentWindow": true}, function(tabs) {
+        chrome.tabs.query({ "active": true, "currentWindow": true }, function(tabs) {
             var tabId = tabs[0] && tabs[0].id ? tabs[0].id : false;
 
             if (tabId) {
@@ -31,9 +68,18 @@
                     "type": "get",
                     "id": tabId
                 }, function (response) {
+                    var size = response.length;
+
+                    if (size <= 0) {
+                        return;
+                    }
+
+                    mainContent.innerHTML = "";
+
                     response = response.reverse();
 
-                    for (var i = response.length - 1; i >= 0; i--) {
+                    for (var i = size - 1; i >= 0; i--) {
+                        populateView(response[i]);
                         populateView(response[i]);
                     }
                 });
@@ -64,8 +110,21 @@
         xhr.send(null);
     }
 
+    function footerEvents()
+    {
+        var show = document.getElementById("show-subscriptions");
+
+        if (show) {
+            show.addEventListener("click", function () {
+                chrome.runtime.sendMessage({ "type": "subscriptions" },
+                                                function (response) {});
+            }, false);
+        }
+    }
+
     window.onload = function() {
         mainContent = document.querySelector(".main");
+        footerEvents();
         loadTemplate();
     };
 })();

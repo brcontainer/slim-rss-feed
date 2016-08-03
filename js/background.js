@@ -7,9 +7,9 @@
  */
 
 (function() {
-    var
-        allFeeds = {},
-        subscriptionsTab;
+    "use strict";
+
+    var allFeeds = {};
 
     chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         switch (request.type) {
@@ -32,14 +32,6 @@
                 } else {
                     sendResponse([]);
                 }
-            break;
-
-            case "subscriptions":
-                chrome.tabs.create({
-                    "url": "view/subscriptions.html"
-                }, function(tab) {
-                    subscriptionsTab = tab.id
-                });
             break;
         }
     });

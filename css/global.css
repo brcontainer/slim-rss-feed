@@ -6,6 +6,8 @@
  * https://github.com/brcontainer/stack-exchange-notification
  */
 
+@import 'icons.css';
+
 html, body, h1, h2, h3, h4, h5, p, a {
     font-family: Open Sans, Arial, sans-serif;
     letter-spacing: 1px;
@@ -92,6 +94,12 @@ hr {
 .no-feeds .img img {
     margin-top: 28px;
     width: 64px;
+}
+.clear::after {
+    clear: both;
+    content: " ";
+    height: 0;
+    display: block;
 }
 
 .hide {

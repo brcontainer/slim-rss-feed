@@ -7,5 +7,22 @@
  */
 
 (function() {
-    window.SlimFeed = {};
+    "use strict";
+
+    window.SlimFeed = {
+        "openOrUpdate": function(url)
+        {
+            var uri = chrome.extension.getURL(url);
+
+            chrome.tabs.query({ "url": uri }, function(tabs) {
+                if (tabs.length) {
+                    chrome.tabs.update(tabs[0].id, {active: true});
+                } else {
+                    chrome.tabs.create({ "url": uri });
+                }
+            });
+
+            return uri;
+        }
+    };
 }());

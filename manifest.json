@@ -10,6 +10,7 @@
     },
     "background": {
         "scripts": [
+            "js/slimfeed.js",
             "js/background.js"
         ]
     },
@@ -22,6 +23,6 @@
         ]
     }],
     "permissions": [
-        "<all_urls>", "webRequest", "webRequestBlocking"
+        "<all_urls>", "tabs", "webRequest", "webRequestBlocking"
     ]
 }

@@ -7,10 +7,13 @@
  */
 
 (function() {
+    "use strict";
+
     var
         tpl,
         mainContent,
-        debugMode;
+        debugMode,
+        isDone;
 
     if ("update_url" in chrome.runtime.getManifest()) {
         debugMode = false;
@@ -110,21 +113,49 @@
         xhr.send(null);
     }
 
+    function headerEvents()
+    {
+        //var about   = document.getElementById("about");
+        var options = document.getElementById("options");
+
+        if (options) {
+            options.addEventListener("click", function () {
+                SlimFeed.openOrUpdate("view/options.html");
+            }, false);
+        }
+    }
+
     function footerEvents()
     {
         var show = document.getElementById("show-subscriptions");
 
         if (show) {
             show.addEventListener("click", function () {
-                chrome.runtime.sendMessage({ "type": "subscriptions" },
-                                                function (response) {});
+                SlimFeed.openOrUpdate("view/subscriptions.html");
             }, false);
         }
     }
 
-    window.onload = function() {
+    function mainPopup() {
+        if (isDone) {
+            return;
+        }
+
+        isDone = true;
+
         mainContent = document.querySelector(".main");
+
+        headerEvents();
+
         footerEvents();
+
         loadTemplate();
-    };
+    }
+
+    if (/^(interactive|complete)$/.test(document.readyState)) {
+        mainPopup();
+    } else {
+        document.addEventListener("DOMContentLoaded", mainPopup);
+        window.addEventListener("onload", mainPopup);
+    }
 })();

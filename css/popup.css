@@ -11,21 +11,7 @@ html {
 }
 
 body {
-    min-height: 600px;
-}
-
-@media (max-device-height: 600px)
-{
-    body {
-        max-height: 480px;
-    }
-}
-
-@media (max-device-height: 400px)
-{
-    body {
-        max-height: 320px;
-    }
+    min-height: 295px;
 }
 
 body, a {
@@ -38,6 +24,23 @@ body > .header {
     background-color: #fff;
     left: 0;
     top: 0;
+}
+
+body > .header h1 {
+    float: left;
+}
+
+body > .header .actions {
+    float: right;
+}
+body > .header .actions a {
+    float: left;
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+}
+body > .header .actions a:last-child {
+    margin: 0;
 }
 
 body > .main {

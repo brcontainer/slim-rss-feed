@@ -14,9 +14,20 @@
         {
             var uri = chrome.extension.getURL(url);
 
-            chrome.tabs.query({ "url": uri }, function(tabs) {
-                if (tabs.length) {
-                    chrome.tabs.update(tabs[0].id, {active: true});
+            chrome.tabs.query({}, function(tabs) {
+                var tabId;
+
+                if (tabs && tabs.length) {
+                    for (var i = tabs.length - 1; i >= 0; i--) {
+                        if (tabs[i].url === uri) {
+                            tabId = tabs[i].id;
+                            break;
+                        }
+                    }
+                }
+
+                if (tabId) {
+                    chrome.tabs.update(tabId, { "active": true });
                 } else {
                     chrome.tabs.create({ "url": uri });
                 }
